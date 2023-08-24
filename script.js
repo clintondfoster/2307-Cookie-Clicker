@@ -5,28 +5,41 @@
  **************/
 
 function updateCoffeeView(coffeeQty) {
-  // your code here
+  const coffeeCount = document.getElementById('coffee_counter');
+  coffeeCount.innerText = coffeeQty;
 }
 
 function clickCoffee(data) {
-  // your code here
+  data.coffee++;
+  updateCoffeeView(data.coffee)
 }
+
 
 /**************
  *   SLICE 2
  **************/
 
 function unlockProducers(producers, coffeeCount) {
-  // your code here
+for (const producer of producers) {
+  if(!producer.unlocked && coffeeCount >= producer.price/2) {
+    producer.unlocked = true;
+    } 
+  }
 }
 
 function getUnlockedProducers(data) {
-  // your code here
+return data.producers.filter(producer => producer.unlocked);
 }
 
+
 function makeDisplayNameFromId(id) {
-  // your code here
+const names = id.split("_");
+const capitalizedNames = names.map(name => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+  })
+return capitalizedNames.join(" ");
 }
+
 
 // You shouldn't need to edit this function-- its tests should pass once you've written makeDisplayNameFromId
 function makeProducerDiv(producer) {
@@ -50,11 +63,19 @@ function makeProducerDiv(producer) {
 }
 
 function deleteAllChildNodes(parent) {
-  // your code here
-}
+ parent.innerHTML = '';
+  }
+
 
 function renderProducers(data) {
-  // your code here
+  const producerContainer = document.getElementById("producer-container");
+  unlockProducers(data.producers, data.coffee);
+  deleteAllChildNodes(producerContainer);
+  const unlockedProducers = getUnlockedProducers(data);
+    unlockedProducers.forEach(producer => {
+      const producerDiv = makeProducerDiv(producer);
+      producerContainer.appendChild(producerDiv);
+  })
 }
 
 /**************
